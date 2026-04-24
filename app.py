@@ -22,12 +22,20 @@ def webhook():
     return "OK"
 
 def ask_gemini(text):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={GEMINI_API_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
     data = {
         "contents": [{"parts":[{"text": text}]}]
     }
+
     res = requests.post(url, json=data)
-    return res.json()['candidates'][0]['content']['parts'][0]['text']
+    result = res.json()
+
+    print("Gemini response:", result)  # 👈 方便你看 log
+
+    try:
+        return result['candidates'][0]['content']['parts'][0]['text']
+    except:
+        return "AI目前有點忙，請稍後再試 🙏"
 
 def reply_line(token, text):
     url = "https://api.line.me/v2/bot/message/reply"
