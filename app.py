@@ -40,3 +40,7 @@ def reply_line(token, text):
         "messages": [{"type": "text", "text": text}]
     }
     requests.post(url, headers=headers, json=data)
+    if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
