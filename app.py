@@ -10,6 +10,10 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 @app.route("/webhook", methods=['POST'])
 def webhook():
     body = request.json
+@app.route("/webhook", methods=['POST'])
+def webhook():
+    body = request.json
+    print("LINE body:", body)   # 👈 放這裡！
 
     for event in body.get("events", []):
         if event["type"] == "message":
@@ -47,7 +51,10 @@ def reply_line(token, text):
         "replyToken": token,
         "messages": [{"type": "text", "text": text}]
     }
-    requests.post(url, headers=headers, json=data)
+
+    res = requests.post(url, headers=headers, json=data)
+    print("LINE reply status:", res.status_code)
+    print("LINE reply response:", res.text)
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
